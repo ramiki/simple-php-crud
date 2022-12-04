@@ -8,9 +8,9 @@ try{
           
           $bdd->setAttribute( PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION );
           //Error Handling
-         
-
-          // ------------------------ drop or creat db-----------------------------------------
+          
+          
+          // ********** drop or creat db
 
 
           $dbname = "azert";
@@ -19,8 +19,18 @@ try{
 
           // $dbs    = "DROP DATABASE IF EXISTS $dbname";  // for drop db
 
-          $stmt = $bdd->query("SHOW DATABASES LIKE '$dbname'");  // secend method to check if db exist
+          $stmt = $bdd->query("SHOW DATABASES LIKE '$dbname'");  // second method to check if db exist
           // $stmt = $bdd->query("SELECT * FROM INFORMATION_SCHEMA.SCHEMATA WHERE SCHEMA_NAME = 'user_test'");  // check if db exist
+
+
+                // therd method to check if db exist with statment 
+          // $sr = "SHOW DATABASES LIKE '$dbname'";  
+          // $stmt = $bdd->prepare($sr);
+          // // $hh->bindParam(':dbname', $dbname);  // didnt work with SHOW !
+          // $stmt->execute();
+          // var_dump($stmt->fetchColumn());
+          // die;
+
 
           if ( $stmt->fetchColumn() == false){
             $bdd->exec($dbq);
@@ -33,17 +43,24 @@ try{
             echo " existed database <br>"; 
           }
 
+        } catch(PDOException $e) {  // catche error in try function and put it in variable $e
+          echo "there was an error" . "<br>" . $e->getMessage();
+        }  // and then echo the variable $sql "or more variable" end echo $e 
           
+
+
+
           // ------------------------creat table-----------------------------------------
           
 
-          $bdd = new PDO('mysql:host=localhost;dbname=user_test','root','');  
+          $ndd = new PDO('mysql:host=localhost;dbname=user_test','root','');  
          //put queary connection to sql and db in variable 
          
-          $bdd->setAttribute( PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION );
-          //Error Handling   
+         $ndd->setAttribute( PDO::ATTR_ERRMODE, PDO::ERRMODE_WARNING );
+         //Error Handling
 
-          $table = "CREATE TABLE IF NOT EXISTS users_test( 
+          $tablen = 'usersyyppppyyi_test';
+          $table = "CREATE TABLE IF NOT EXISTS $tablen( 
                  ID INT( 11 ) AUTO_INCREMENT PRIMARY KEY,
                  firstname VARCHAR( 50 ) NOT NULL ,
                  lastname VARCHAR( 100 ) NOT NULL ,
@@ -53,25 +70,16 @@ try{
                  ";
            //put creat table queary if not exist with champs in variable $table
 
-          $tablen = 'users_test';
-          $tables = $bdd->query("show tables")->fetchAll(PDO::FETCH_GROUP);
-           // $exists = $bdd->query('select 1 from dd88'); not work
-           //  prepar sql if table exist
-
-        if ( in_array($tablen, array_keys($tables)) ) {   echo"existed table <br> ";
-        } else { $bdd->exec($table); 
+                 
+          $tables = $ndd->query("show tables")->fetchAll(PDO::FETCH_GROUP);
+          //  $exists = $ndd->query("SELECT 1 from $tablen"); // second method (problem when catch error 'remove  set attr error to work')
+           
+           //  check if table exist
+          //  if ( $exists ) {   echo" existed table <br> ";   // second method
+           if ( in_array($tablen, array_keys($tables)) ) {   echo " existed table <br> ";
+           } else { $ndd->exec($table); 
                echo 'Created Table<br>';
                }              
               // test and execute queary  with connection upster      
-              //  with message for creat table
-
-
-
-          // ------------------------catch errors-----------------------------------------
-              
-
-            } catch(PDOException $e) {  // catche error in try function and put it in variable $e
-                echo "there was an error" . "<br>" . $e->getMessage();
-              }    
-                   // and then echo the variable $sql "or more variable" end echo $e 
+              //  with message for creat table      
 
