@@ -8,12 +8,14 @@ try{
           
           $bdd->setAttribute( PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION );
           //Error Handling
-          
-          
+         
+
+
+
           // ********** drop or creat db
 
 
-          $dbname = "azert";
+          $dbname = "user_test";
           $dbq    = "CREATE DATABASE IF NOT EXISTS $dbname";
           //put creat sql queary if not exist in variable
 
@@ -43,23 +45,24 @@ try{
             echo " existed database <br>"; 
           }
 
-        } catch(PDOException $e) {  // catche error in try function and put it in variable $e
-          echo "there was an error" . "<br>" . $e->getMessage();
-        }  // and then echo the variable $sql "or more variable" end echo $e 
-          
+       
 
+        } catch(PDOException $e) {  // catche error in try function and put it in variable $e
+          echo "there was an error in table block " . "<br>" . $e->getMessage();
+        }  // and then echo the variable $sql "or more variable" end echo $e 
 
 
           // ------------------------creat table-----------------------------------------
           
 
-          $ndd = new PDO('mysql:host=localhost;dbname=user_test','root','');  
+
+          $ndd = new PDO("mysql:host=localhost;dbname=$dbname",'root','');  
          //put queary connection to sql and db in variable 
          
          $ndd->setAttribute( PDO::ATTR_ERRMODE, PDO::ERRMODE_WARNING );
          //Error Handling
 
-          $tablen = 'usersyyppppyyi_test';
+          $tablen = 'users_test';
           $table = "CREATE TABLE IF NOT EXISTS $tablen( 
                  ID INT( 11 ) AUTO_INCREMENT PRIMARY KEY,
                  firstname VARCHAR( 50 ) NOT NULL ,
@@ -83,3 +86,5 @@ try{
               // test and execute queary  with connection upster      
               //  with message for creat table      
 
+         
+              
