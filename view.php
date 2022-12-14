@@ -147,7 +147,7 @@ if(isset($_POST['delete'])) {   // delete in the same page
 
 <table class="table">
 
-<a href="create.php" class="btn btn-primary">
+<a href="simple-php-euth-main/register.php" class="btn btn-primary">
  Add
 </a>
 <br><br>
