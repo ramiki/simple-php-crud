@@ -1,6 +1,14 @@
 <?php
 include "config.php";
 
+  // Initialiser la session
+  session_start();
+  // Vérifiez si l'utilisateur est connecté, sinon redirigez-le vers la page de connexion
+  if(!isset($_SESSION["username"])){
+    header("Location: simple-php-euth-main/login.php");
+    exit(); 
+  }
+
 if(isset($_POST['delete'])) {   // delete in the same page
 
     $user_id = $_POST['del_id'];    
@@ -32,11 +40,18 @@ if(isset($_POST['delete'])) {   // delete in the same page
     <title>CRUD View</title>
     <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css"> -->
     <link rel="stylesheet" href="../bootstrap/css/bootstrap.css">
+    <link rel="stylesheet" href="simple-php-euth-main/style.css" />
     <script src="../bootstrap/js/bootstrap.js"></script>
 </head>
 
 <body>
     <div class="container p-4">
+
+    <div class="sucess">
+    <h1>Bienvenue <?php echo $_SESSION['username']; ?>!</h1>
+    <p>C'est votre tableau de bord.</p>
+    <a href="simple-php-euth-main/logout.php">Déconnexion</a>
+    </div>
 
         <h2>Users</h2>
 

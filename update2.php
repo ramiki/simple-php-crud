@@ -75,7 +75,7 @@ if (isset($_REQUEST['up_id'])) {     // REQUEST to fint out what methode is used
                 echo '</script>';
             }
 } else {
-    echo "access refuse <a href='t.php' style='background-color: #4CAF50; /* Green */ padding: 6px 16px;  margin: 0px 14px;' type='button' value='view'> 
+    echo "access refuse <a href='view.php' style='background-color: #4CAF50; /* Green */ padding: 6px 16px;  margin: 0px 14px;' type='button' value='view'> 
         View   </a>";
 }
 

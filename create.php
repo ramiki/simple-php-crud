@@ -3,6 +3,14 @@
 
 include "config.php";
 
+ // Initialiser la session
+ session_start();
+ // Vérifiez si l'utilisateur est connecté, sinon redirigez-le vers la page de connexion
+ if(!isset($_SESSION["username"])){
+   header("Location: simple-php-euth-main/login.php");
+   exit(); 
+ }
+
 if (isset($_POST['submit'])) {
 
     $keygen = substr(str_shuffle("0123456789abcdefghijklmnopqrstuvwxyz"), 0, 50);
