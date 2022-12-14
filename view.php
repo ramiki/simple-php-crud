@@ -1,5 +1,6 @@
 <?php
 include "config.php";
+include "simple-php-euth-main/config.php";
 
   // Initialiser la session
   session_start();
@@ -14,19 +15,23 @@ if(isset($_POST['delete'])) {   // delete in the same page
     $user_id = $_POST['del_id'];    
      // id num returned by delete hiden input
 
-    $sql = "DELETE FROM users_test WHERE ID = :del_id ";
+     $sql = "DELETE FROM users_test WHERE ID = :del_id ";
+     $sqlu = "DELETE FROM users WHERE ID = $user_id ";
    
     // $result = $bdd->query($sql); // sigle ligne query ( with out prepare & bindparam & execute) but no boolean check
     $resulta = $bdd->prepare($sql);
     $resulta->bindParam(':del_id' , $_POST["del_id"]);
     $resulta->execute();
 
-    if ($resulta == TRUE)  {
+    $resu = mysqli_query($conn, $sqlu);
+
+    if ($resulta == TRUE OR $resu == TRUE)  {
           echo "<br> * Recorde deleted successfully <br>";
          
          }
          else { echo "Error To Delete "  ; }   
          // . $bdd->error for more explination
+       
     }
 
 ?>
@@ -96,7 +101,7 @@ if(isset($_POST['delete'])) {   // delete in the same page
                    <td><?php echo $row['firstname']; ?> </td>
                    <td><?php echo $row['lastname']; ?> </td>
                    <td><?php echo $row['email']; ?> </td>
-                   <td><?php echo substr(password_hash($row['password'], PASSWORD_DEFAULT) , 0 , 30); ?> </td>
+                   <td><?php echo $row['password']; ?> </td>
                    <td><?php echo $row['gender']; ?> </td>
 
                    <!-- delete and update POST methode 1 -->
@@ -134,14 +139,11 @@ if(isset($_POST['delete'])) {   // delete in the same page
 </html>
 
 
-
-
   <!-- **************  Pagination   ****************** -->
 
-  
 <div class="container p-4">
 
-<h2>Users  With Pagination</h2>
+<h2>admin's in Pagination</h2>
 
 <table class="table">
 
@@ -152,21 +154,15 @@ if(isset($_POST['delete'])) {   // delete in the same page
 <thead>
 <tr>
 <th>ID</th>
-<th>First name</th>
-<th>Last name</th>
+<th>User Name</th>
 <th>Email</th>
 <th>Password</th>
-<th>Gender</th>
-<th>Action</th>
 </tr>
 </thead>
 
 <tbody> 
 
-
-
 <?php
-
 
 // ********* pagination script 
 
@@ -185,9 +181,11 @@ for( $co = 1 ; $co <= $totalp ; ++$co) {
 echo "<a style = ' color: black;  float: left; position: relative; left: 40%; padding: 10px 25px;  text-decoration:underline overline #FF3028;' href = 'view.php?page=" . $co. "'>" .$co . "<a>" ;
 }
 
-$sqla = "SELECT * FROM users_test LIMIT " . $resultpage . " OFFSET ". ($page-1)*$resultpage ;
-$n = $bdd->prepare($sqla);
-$n->execute();
+// $sqla = "SELECT * FROM users LIMIT " . $resultpage . "," .  ($page-1)*$resultpage ;  // didnt work with , ( coma )
+$sqla = "SELECT * FROM users LIMIT " . $resultpage . " OFFSET ". ($page-1)*$resultpage ;
+$n = mysqli_query($conn, $sqla);  // mysqli connection
+// $n = $bdd->prepare($sqla);  pdo connection ( not work )
+// $n->execute();
 
 foreach ($n as $b){
 
@@ -195,11 +193,9 @@ foreach ($n as $b){
                 <tr>   
                    <td><?php echo "<a href = '?ID= " . $b['ID'] . "' > " . $b['ID']. "</a>"; ?> </td>
                    <!-- just testing link for user manage/show -->
-                   <td><?php echo $b['firstname']; ?> </td>
-                   <td><?php echo $b['lastname']; ?> </td>
+                   <td><?php echo $b['username']; ?> </td>
                    <td><?php echo $b['email']; ?> </td>
                    <td><?php echo substr(password_hash($b['password'], PASSWORD_DEFAULT) , 0 , 30); ?> </td>
-                   <td><?php echo $b['gender']; ?> </td>
 
                    <!-- delete and update POST methode 1 -->
                    <td>
@@ -207,19 +203,6 @@ foreach ($n as $b){
                    <input  type="hidden" name="del_id" value="<?php print $b['ID']; ?>">  
                    <input class="btn btn-danger" type="submit" name="delete" value="Delete"/> 
                    </td>
-                   <td>
-                   </form>
-                   <form action="update2.php" method="POST"> 
-                    <!-- for method we use request or post ( if empty or any other name = get )  -->
-                   <input  type="hidden" name="up_id" value="<?php print $b['ID']; ?>">
-                   <input class="btn btn-info" type="submit" name="update" value="Update"/>
-                   </form>
-                   </td>
-
-                   <!-- delete and update GET methode -->
-                   <!-- <td> <a class="btn btn-danger" href="delete.php?ID=<?php //echo $b['ID']; ?>&key=<?php //echo $b['keygen']; ?>"> Delete </a> </td> -->
-                   <!-- keygen for secure deleting any user id by get methode -->
-                   <!-- <td> <a class="btn btn-info"   href="update.php?ID=<?php //echo $b['ID']; ?>"> Edit   </a> </td> -->
                 </tr>
 
                 <?php  }  ?>
@@ -239,11 +222,3 @@ foreach ($n as $b){
 ?>
     <!-- not work !! -->
     <!-- <a style = ' color: black;  float: left; position: relative; left: 40%; padding: 10px 25px; text-decoration:underline overline #FF3028;' href = 'view.php?page=<?php $co ;  ?>' >ff <?php $co ;  ?> </a> -->
-
-
-
-
-
-
-
- 
