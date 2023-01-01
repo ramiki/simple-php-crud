@@ -1,15 +1,33 @@
 <?php
 
+include "../config/database_oop.php";
+// include "simple-php-euth-main/config.php";
 
-include "config.php";
+$database = new Database();
+$db = $database->connect();
 
  // Initialiser la session
  session_start();
  // Vérifiez si l'utilisateur est connecté, sinon redirigez-le vers la page de connexion
  if(!isset($_SESSION["username"])){
-   header("Location: simple-php-euth-main/login.php");
+   header("Location: ../users/login.php");
    exit(); 
  }
+
+
+//  $t = "ALTER TABLE `form` AUTO_INCREMENT=200";
+//  $b = $db->prepare($t);
+//  $b->execute();
+
+
+ $username = $_SESSION['username'] ; 
+
+ $sqlid = " SELECT ID , username FROM users WHERE username = '$username' " ;
+ $r = $db->query($sqlid);
+ $userid = $r->fetch(PDO::FETCH_ASSOC);
+
+$uid = $userid["ID"] ;
+$uname = $userid["username"] ;
 
 if (isset($_POST['submit'])) {
 
@@ -20,22 +38,23 @@ if (isset($_POST['submit'])) {
     $password = $_POST['password'];
     $gender = @$_POST['gender'];
 
-    $sql = "INSERT INTO users_test(firstname,lastname,email,password,gender,keygen) VALUES('$first_name','$last_name','$email','$password','$gender','$keygen')";
+   
+    $sql = "INSERT INTO form (firstname,lastname,email,password,gender,keygen,userid , username) VALUES('$first_name','$last_name','$email','$password','$gender','$keygen', '$uid','$uname' )";
 
     if (empty($first_name) or empty($last_name) or empty($email) or empty($password)) {
         echo "PLZ remplie les champs:" . "<br>";
     } else {
 
-        // $bdd->exec($sql); // with out prepare & execute
-        $result = $bdd->prepare($sql);
+        // $db->exec($sql); // with out prepare & execute
+        $result = $db->prepare($sql);
         $result->execute();
         echo "new record created succesfully";
-        // $bdd = null ;  // (deconnecting)
+        // $db = null ;  // (deconnecting)
 
         // test lastinsertid
-        // echo $f = $bdd->lastInsertId();
+        // echo $f = $db->lastInsertId();
         // $s = "SELECT * FROM  users_test WhERE ID = '$f' ";
-        // $result  = $bdd->prepare($s);
+        // $result  = $db->prepare($s);
         // $resulta = $result->execute();  // return boolean to check
         // $row = $result->fetch(PDO::FETCH_ASSOC);
 

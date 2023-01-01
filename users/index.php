@@ -6,7 +6,7 @@
     header("Location: login.php");
     exit(); 
   }
-  header("Location: ../view.php");
+  header("Location: ../tickets/view.php");
 ?>
 
 <!-- <!DOCTYPE html>

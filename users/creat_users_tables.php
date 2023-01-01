@@ -1,43 +1,32 @@
 <?php
 
 try{
-           $bdd = new PDO('mysql:host=localhost;','root','');  
-           //put queary connection to sql in variable 
-          
-          $bdd->setAttribute( PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION );
-          //Error Handling
-         
-          $dbq    = 'CREATE DATABASE IF NOT EXISTS euth';
-          //put creat db queary if not exist in variable sql
 
-          $bdd->exec($dbq);
-          //execute queary  with connection upster
 
-          echo "Database created successfully<br>" ;
-         //  message for creat db
-
-          $bdd = new PDO('mysql:host=localhost;dbname=euth','root','');  
+          $bdd = new PDO('mysql:host=localhost;dbname=tickets_app','root','');  
          //put queary connection to sql and db in variable 
          
           $bdd->setAttribute( PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION );
-          //Error Handling
-             
-         
+          //Error Handling    
 
-          $table = "CREATE TABLE IF NOT EXISTS users( 
+          $tablen = 'users';
+          $table = "CREATE TABLE IF NOT EXISTS $tablen( 
                  ID INT( 11 ) AUTO_INCREMENT PRIMARY KEY,
                  username VARCHAR( 50 ) NOT NULL ,
                  email VARCHAR( 50 ) NOT NULL ,
-                 password VARCHAR( 100 ) NOT NULL
+                 password VARCHAR( 100 ) NOT NULL ,
+                 pass VARCHAR( 50 ) NOT NULL ,
+                 created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP , 
+                 lastUpdated TIMESTAMP on update CURRENT_TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
                  )";
            //put creat table queary if not exist with champs in variable $table
 
-          $tablen = 'users';
+         
           $tables = $bdd->query("show tables")->fetchAll(PDO::FETCH_GROUP);
-           // $exists = $bdd->query('select 1 from dd88'); not work
-           //  prepar sql if table exist
+           // $exists = $bdd->query('select 1 from users'); not work
+           //  find if table exist
 
-        if ( in_array($tablen, array_keys($tables)) ) {   echo"deja";
+        if ( in_array($tablen, array_keys($tables)) ) { echo"deja";
         } else { $bdd->exec($table); 
                echo 'Created Table<br>';
                }              

@@ -7,7 +7,7 @@ include "config.php";
 if (isset($_GET['ID'])) {
 
     $user_id = $_GET['ID'];
-    $sql = "SELECT * FROM users_test WHERE ID = '$user_id'";
+    $sql = "SELECT * FROM form WHERE ID = '$user_id'";
 
     $result  = $bdd->query($sql);  // direct sql query
     // $result  = $bdd->prepare($sql);
@@ -89,7 +89,7 @@ if (isset($_POST['update'])) {
     $password = $_POST['password'];
     $gender = $_POST['gender'];
 
-    $sql = "UPDATE users_test SET firstname='$firstname',lastname='$lastname',email='$email',password ='$password',gender='$gender' WHERE ID='$user_id'";
+    $sql = "UPDATE form SET firstname='$firstname',lastname='$lastname',email='$email',password ='$password',gender='$gender' WHERE ID='$user_id'";
     $result = $bdd->query($sql);
     $bdd->exec($sql);
 

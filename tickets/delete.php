@@ -1,17 +1,20 @@
 <?php
 
-// delete GET methode :
+include "../config/database_oop.php";
+// include "simple-php-euth-main/config.php";
 
-include "config.php";
+$database = new Database();
+$db = $database->connect();
 
+// delete GET methode 
 if (isset($_GET['ID'])) {
 
   $user_id = $_GET['ID'];
   $keygen = $_GET['key'];
 
   // keygen for secure deleting any user id by get methode 
-  $sql = "DELETE FROM users_test WHERE ID = '$user_id' AND keygen = '$keygen' ";
-  $result = $bdd->exec($sql);
+  $sql = "DELETE FROM form WHERE ID = '$user_id' AND keygen = '$keygen' ";
+  $result = $db->exec($sql);
 
   if ($result == TRUE) {
     echo "<br> * Recorde deleted successfully <br>";

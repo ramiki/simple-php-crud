@@ -1,12 +1,13 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="../style/style.css" />
 </head>
 <body>
 <?php
 
-require('config.php');
+require('../config/database_oop.php');
+// test mysqli connection
 
   // Initialiser la session
   session_start();
@@ -16,7 +17,7 @@ require('config.php');
     // echo "<h1>vous etes deja login : " . $_SESSION["username"] . "</h1><br>" ;
     // echo "<h2><a href='index.php'>votre tableau de bord ici</a></h2>" ;
     // echo "</div>" ; 
-    header("Location: ../view.php");
+    header("Location: ../tickets/view.php");
     exit(); 
   }
 
@@ -28,8 +29,7 @@ if (isset($_POST['username'])){
     $query = "SELECT * FROM `users` WHERE username='$username' AND password='".hash('sha256', $password)."'";
   $result = mysqli_query($conn,$query) or die( mysqli_connect_error());
   $rows = mysqli_num_rows($result);
-  // var_dump($query)  ;
-  // die();
+
   if($rows==1){
       $_SESSION['username'] = $username;
       header("Location: index.php");
@@ -38,14 +38,14 @@ if (isset($_POST['username'])){
   }
 }
 ?>
-<form class="box" action="" method="post" name="login">
+<form class="box" action="" method="POST" name="login">
 <h1 class="box-logo box-title"><a href="">euth</a></h1>
 <h1 class="box-title">Connexion</h1>
 <input type="text" class="box-input" name="username" placeholder="Nom d'utilisateur">
 <input type="password" class="box-input" name="password" placeholder="Mot de passe">
 <input type="submit" value="Connexion " name="submit" class="box-button">
 <p class="box-register">Vous êtes nouveau ici? <a href="register.php">S'inscrire</a></p>
-<?php if (! empty($message)) { ?>
+<?php if (!empty($message)) { ?>
     <p class="errorMessage"><?php echo $message; ?></p>
 <?php } ?>
 </form>

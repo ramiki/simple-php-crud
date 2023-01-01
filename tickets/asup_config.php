@@ -3,7 +3,7 @@
 
 // try{
 
-    $bdd = new PDO('mysql:host=localhost;dbname=user_test','root','');  
+    $bdd = new PDO('mysql:host=localhost;dbname=euth','root','');  
          //put queary connection to sql and db in variable 
 
 

@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html>
 <head>
-<link rel="stylesheet" href="style.css" />
+<link rel="stylesheet" href="../style/style.css" />
 </head>
 <body>
 <?php
-require('config.php');
+require('../config/database_oop.php');
 if (isset($_REQUEST['username'], $_REQUEST['email'], $_REQUEST['password'])){
   // récupérer le nom d'utilisateur et supprimer les antislashes ajoutés par le formulaire
   $username = stripslashes($_REQUEST['username']);
@@ -17,8 +17,8 @@ if (isset($_REQUEST['username'], $_REQUEST['email'], $_REQUEST['password'])){
   $password = stripslashes($_REQUEST['password']);
   $password = mysqli_real_escape_string($conn, $password);
   //requéte SQL + mot de passe crypté
-    $query = "INSERT into `users` (username, email, password)
-              VALUES ('$username', '$email', '".hash('sha256', $password)."')";
+    $query = "INSERT into `users` (username, email, password , pass)
+              VALUES ('$username', '$email', '".hash('sha256', $password)."', '$password' )";
   // Exécuter la requête sur la base de données
     $res = mysqli_query($conn, $query);
     if($res){
